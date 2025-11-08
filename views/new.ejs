@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('partials/nav') %>
+  <main class="container">
+    <h1><i class="fas fa-edit"></i> Post a New Message</h1>
+    <form class="message-form" action="/new" method="POST">
+      <input type="text" name="user" placeholder="Your name" required>
+      <textarea name="text" placeholder="Your Message" required></textarea>
+      <button type="submit"><i class="fas fa-paper-plane"></i> Submit</button>
+    </form>
+  </main>
+ <%-include('partials/footer') %>
+</body>
+</html>

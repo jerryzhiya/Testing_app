@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    
+    <title><%= title %></title>
+</head>
+<body>
+     <%- include('partials/nav') %>
+  <main class="container">
+    <h1><i class="fas fa-file-alt"></i> Message Details</h1>
+    <div class="message-detail">
+      <p><strong><i class="fas fa-user"></i> User:</strong> <%= contents.user %></p>
+      <p><strong><i class="fas fa-comment-dots"></i> Message:</strong> <%= contents.text %></p>
+      <p><strong><i class="fas fa-clock"></i> Posted:</strong> <%= contents.added.toLocaleString() %></p>
+    </div>
+  </main>
+   <%-include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+   <main>
+  <%- include('partials/nav') %>
+  <main class="container">
+    <h1><i class="fas fa-comments"></i> Welcome to Message Board</h1>
+    <ul class="message-list">
+      <% messages.forEach(message => { %>
+        <li class="message-item" data-id="<%= message.id %>">
+          <p><i class="fas fa-user"></i> <%= message.user %></p>
+          <p><%= message.text %></p>
+          <div class="message-actions">
+            <a class="open-btn" href="/messages/<%= message.id %>">
+              <i class="fas fa-eye"></i> Open
+            </a>
+            <button class="like-btn icon" data-id="<%= message.id %>">
+              <i class="fas fa-thumbs-up"></i> Like (<span class="like-count">0</span>)
+            </button>
+            <form class="comment-form" data-id="<%= message.id %>">
+              <input type="text" name="comment" placeholder="Add comment" required>
+              <button type="submit" class="icon"><i class="fas fa-comment"></i> Comment</button>
+            </form>
+            <ul class="comment-list" data-id="<%= message.id %>"></ul>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </main>
+  <%- include('partials/footer') %>
+</main>
+<script>
+document.querySelectorAll('.like-btn').forEach(button => {
+  button.addEventListener('click', async () => {
+    const id = button.dataset.id;
+    const countSpan = button.querySelector('.like-count');
+
+    const res = await fetch(`/messages/${id}/like`, { method: 'POST' });
+    const data = await res.json();
+
+    if (res.ok) {
+      countSpan.textContent = data.likes;
+    }
+  });
+});
+
+document.querySelectorAll('.comment-form').forEach(form => {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const messageId = form.dataset.id;
+    const input = form.querySelector('input[name="comment"]');
+    const commentList = document.querySelector(`.comment-list[data-id="${messageId}"]`);
+
+    if (input.value.trim() !== '') {
+      const res = await fetch(`/messages/${messageId}/comment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ comment: input.value })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const li = document.createElement('li');
+        li.textContent = data.comment;
+        commentList.appendChild(li);
+        input.value = '';
+      }
+    }
+  });
+});
+</script>
+</body>
+
+</html>
